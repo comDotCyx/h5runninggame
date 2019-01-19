@@ -36,6 +36,15 @@ var loadedMetaData = false;
 var audioSrc = "../media/bgm1.mp3";
 var audioTimer = null;
 
+audio.addEventListener("loadedmetadata", function() {
+	loadedMetaData = true;
+});
+audio.addEventListener("error", function() {
+	audioTimer && clearInterval(audioTimer);
+});
+
+
+
 //数据存储和展示
 var dataUi,dataStorage,storageFuncs;
 var endTipBg;
@@ -43,20 +52,16 @@ var recordPage = $("#record");
 var cover = $("#cover");
 
 //安排背景音乐
-function bindBgm(btn){
-	var btn = $(btn);
-	audio.addEventListener("loadedmetadata", function() {
-		loadedMetaData = true;
-	});
-	audio.addEventListener("error", function() {
-		audioTimer && clearInterval(audioTimer);
-	});
+function bindBgm(){
+	var btn = $("#bgmBtn");
 
 	btn.on("click", function(){
 		if(audioPlayed === false){
 			audio.play();
 			audioPlayed = true;
 			audio.pause();	
+			loadedMetaData = false;
+
 			audio.src = audioSrc;
 			audio.load();
 
@@ -64,11 +69,12 @@ function bindBgm(btn){
 				if (/UCBrowser/.test(navigator.userAgent)) {
 					loadedMetaData = true;
 				}
-				
+
 				if (audio.readyState > 2 && loadedMetaData) {
+					clearInterval(audioTimer);
+					audio.play();
 					audio.play();
 					btn.addClass('playing').removeClass('paused');
-					clearInterval(audioTimer);
 				}
 			}, 500);
 		}else{
@@ -563,7 +569,7 @@ $(function(){
 	})
 
 	//背景音乐
-	bindBgm("#bgmBtn");
+	bindBgm();
 
 	//绑定查看历史记录
 	cover.on("click", ".recordBtn", function(){
