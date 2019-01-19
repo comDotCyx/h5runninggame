@@ -56,28 +56,29 @@ function bindBgm(btn){
 		if(audioPlayed === false){
 			audio.play();
 			audioPlayed = true;
+			audio.pause();	
 			audio.src = audioSrc;
-			
 			audio.load();
+
 			audioTimer = setInterval(function() {			
 				if (/UCBrowser/.test(navigator.userAgent)) {
 					loadedMetaData = true;
 				}
 				if (audio.readyState > 2 && loadedMetaData) {
-					clearInterval(audioTimer);
-					btn.addClass('paused');
 					audio.play();
+					btn.addClass('playing').removeClass('paused');
+					clearInterval(audioTimer);
 				}
 			}, 500);
-		}
-
-		if(btn.hasClass('playing')){
-			audio.pause();
-			btn.addClass('paused').removeClass('playing');
 		}else{
-			btn.addClass('playing').removeClass('paused');
-			audio.play();
-		}
+			if(btn.hasClass('playing')){
+				audio.pause();
+				btn.addClass('paused').removeClass('playing');
+			}else{
+				btn.addClass('playing').removeClass('paused');
+				audio.play();
+			}
+		}	
 	})
 }
 
