@@ -32,7 +32,7 @@ var punishs;	//两种惩罚
 var audio = new Audio();
 audio.loop = true;
 var audioPlayed = false;
-var audioLoaded = false;
+var loadedMetaData = false;
 var audioSrc = "../media/bgm1.mp3";
 var audioTimer = null;
 
@@ -64,6 +64,7 @@ function bindBgm(btn){
 				if (/UCBrowser/.test(navigator.userAgent)) {
 					loadedMetaData = true;
 				}
+				
 				if (audio.readyState > 2 && loadedMetaData) {
 					audio.play();
 					btn.addClass('playing').removeClass('paused');
