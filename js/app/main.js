@@ -33,22 +33,20 @@ var audio = new Audio();
 audio.loop = true;
 var audioPlayed = false;
 var loadedMetaData = false;
-var audioSrc = {
-	mp3: "../media/bgm1.mp3",
-	ogg: "../media/bgm1.ogg",
-};
+var audioSrc = ["../media/bgm2.mp3","../media/bgm1.ogg"];
 var audioTimer = null;
 var bgmBtn = $("#bgmBtn");
+var canPlayType;
 
 audio.addEventListener("canplaythrough", function() {
 	loadedMetaData = true;
-	alert("canplaythrough");
 });
 audio.addEventListener("error", function() {
 	audioTimer && clearInterval(audioTimer);
 	alert("背景音乐加载失败");
 	bgmBtn.addClass('paused').removeClass('playing');
 	loadedMetaData = false;
+	audioPlayed = false
 });
 
 
@@ -62,23 +60,26 @@ var cover = $("#cover");
 function testAudioCanplayType(){
 	var canPlayMp3 = audio.canPlayType("audio/mp3");
 	var canPlayOgg = audio.canPlayType("audio/ogg");
-	alert("canPlayMp3");
-	alert("canPlayOgg");
+	return (!!canPlayMp3 && "0") || (!!canPlayOgg && "1");
 }
 
 //安排背景音乐
 function bindBgm(){
-	testAudioCanplayType();	
+	canPlayType = testAudioCanplayType();
+	if(!canPlayType){
+		alert("当前浏览器不支持播放音乐");
+		bgmBtn.hide();
+		return;
+	}
 
 	bgmBtn.on("click", function(){
 		if(audioPlayed === false){
-			alert("begin to load");
 			audio.play();
 			audioPlayed = true;
 			audio.pause();	
 			loadedMetaData = false;
 
-			audio.src = audioSrc.ogg;
+			audio.src = audioSrc[canPlayType];
 			audio.load();
 
 			audioTimer = setInterval(function() {			
@@ -87,7 +88,6 @@ function bindBgm(){
 				}
 
 				if (audio.readyState > 3 && loadedMetaData) {
-					alert("Audio is already");
 					clearInterval(audioTimer);
 					audio.play();
 					bgmBtn.addClass('playing').removeClass('paused');
