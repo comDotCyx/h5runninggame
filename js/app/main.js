@@ -78,7 +78,7 @@ function bindBgm(){
 			audio.pause();	
 			loadedMetaData = false;
 
-			audio.src = audioSrc.mp3;
+			audio.src = audioSrc.ogg;
 			audio.load();
 
 			audioTimer = setInterval(function() {			
