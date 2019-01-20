@@ -59,7 +59,7 @@ var endTipBg;
 var recordPage = $("#record");
 var cover = $("#cover");
 
-function testIfAudioCanplay(){
+function testAudioCanplayType(){
 	var canPlayMp3 = audio.canPlayType("audio/mp3");
 	var canPlayOgg = audio.canPlayType("audio/ogg");
 	alert("canPlayMp3");
