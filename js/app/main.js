@@ -36,11 +36,13 @@ var loadedMetaData = false;
 var audioSrc = "../media/bgm1.mp3";
 var audioTimer = null;
 
-audio.addEventListener("loadedmetadata", function() {
+audio.addEventListener("canplaythrough", function() {
 	loadedMetaData = true;
+	alert("canplaythrough");
 });
 audio.addEventListener("error", function() {
 	audioTimer && clearInterval(audioTimer);
+	alert("音频加载出错");
 });
 
 
@@ -57,6 +59,7 @@ function bindBgm(){
 
 	btn.on("click", function(){
 		if(audioPlayed === false){
+			alert("begin to load");
 			audio.play();
 			audioPlayed = true;
 			audio.pause();	
@@ -70,9 +73,9 @@ function bindBgm(){
 					loadedMetaData = true;
 				}
 
-				if (audio.readyState > 2 && loadedMetaData) {
+				if (audio.readyState > 3 && loadedMetaData) {
+					alert("Audio is already");
 					clearInterval(audioTimer);
-					audio.play();
 					audio.play();
 					btn.addClass('playing').removeClass('paused');
 				}
