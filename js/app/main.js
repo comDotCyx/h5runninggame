@@ -33,8 +33,12 @@ var audio = new Audio();
 audio.loop = true;
 var audioPlayed = false;
 var loadedMetaData = false;
-var audioSrc = "../media/bgm1.mp3";
+var audioSrc = {
+	mp3: "../media/bgm1.mp3",
+	ogg: "../media/bgm1.ogg",
+};
 var audioTimer = null;
+var bgmBtn = $("#bgmBtn");
 
 audio.addEventListener("canplaythrough", function() {
 	loadedMetaData = true;
@@ -42,7 +46,9 @@ audio.addEventListener("canplaythrough", function() {
 });
 audio.addEventListener("error", function() {
 	audioTimer && clearInterval(audioTimer);
-	alert("音频加载出错");
+	alert("背景音乐加载失败");
+	bgmBtn.addClass('paused').removeClass('playing');
+	loadedMetaData = false;
 });
 
 
@@ -53,11 +59,18 @@ var endTipBg;
 var recordPage = $("#record");
 var cover = $("#cover");
 
+function testIfAudioCanplay(){
+	var canPlayMp3 = audio.canPlayType("audio/mp3");
+	var canPlayOgg = audio.canPlayType("audio/ogg");
+	alert("canPlayMp3");
+	alert("canPlayOgg");
+}
+
 //安排背景音乐
 function bindBgm(){
-	var btn = $("#bgmBtn");
+	testAudioCanplayType();	
 
-	btn.on("click", function(){
+	bgmBtn.on("click", function(){
 		if(audioPlayed === false){
 			alert("begin to load");
 			audio.play();
@@ -65,7 +78,7 @@ function bindBgm(){
 			audio.pause();	
 			loadedMetaData = false;
 
-			audio.src = audioSrc;
+			audio.src = audioSrc.mp3;
 			audio.load();
 
 			audioTimer = setInterval(function() {			
@@ -77,15 +90,15 @@ function bindBgm(){
 					alert("Audio is already");
 					clearInterval(audioTimer);
 					audio.play();
-					btn.addClass('playing').removeClass('paused');
+					bgmBtn.addClass('playing').removeClass('paused');
 				}
 			}, 500);
 		}else{
-			if(btn.hasClass('playing')){
+			if(bgmBtn.hasClass('playing')){
 				audio.pause();
-				btn.addClass('paused').removeClass('playing');
+				bgmBtn.addClass('paused').removeClass('playing');
 			}else{
-				btn.addClass('playing').removeClass('paused');
+				bgmBtn.addClass('playing').removeClass('paused');
 				audio.play();
 			}
 		}	

@@ -38,6 +38,8 @@ var endTipBg;
 var recordPage = $("#record");
 var cover = $("#cover");
 
+
+
 //安排背景音乐
 function bindBgm(){
 	var btn = $("#bgmBtn");
