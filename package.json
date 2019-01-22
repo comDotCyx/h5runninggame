@@ -1,0 +1,19 @@
+{
+  "name": "h5runninggame",
+  "version": "2.0.0",
+  "description": "Code refactoring: with amd.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "amdbuild": "node ./tools/r.js -o tools/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comDotCyx/h5runninggame.git"
+  },
+  "author": "comDotCyx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/comDotCyx/h5runninggame/issues"
+  },
+  "homepage": "https://github.com/comDotCyx/h5runninggame#readme"
+}
